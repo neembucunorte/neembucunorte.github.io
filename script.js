@@ -13,13 +13,13 @@ const datos = {
   1: { nombre: 'ESPECIAL 93 (CALLE)', ini: '', cie: '' },
   2: { nombre: 'SUPER 97 (CALLE)', ini: '', cie: '' },
   3: { nombre: 'DIESEL SMART (CALLE)', ini: '', cie: '' },
-  4: { nombre: 'ESCPECIAL 93 (DENTRO)', ini: '', cie: '' },
+  4: { nombre: 'ESPECIAL 93 (DENTRO)', ini: '', cie: '' },
   5: { nombre: 'SUPER 97 (DENTRO)', ini: '', cie: '' },
   6: { nombre: 'DIESEL SMART (DENTRO)', ini: '', cie: '' },
   7: { nombre: 'ESPECIAL 93 (CALLE)', ini: '', cie: '' },
   8: { nombre: 'SUPER 97 (CALLE)', ini: '', cie: '' },
   9: { nombre: 'DIESEL (CALLE)', ini: '', cie: '' },
-  10: { nombre: 'ESCPECIAL 93 (DENTRO)', ini: '', cie: '' },
+  10: { nombre: 'ESPECIAL 93 (DENTRO)', ini: '', cie: '' },
   11: { nombre: 'SUPER 97 (DENTRO)', ini: '', cie: '' },
   12: { nombre: 'DIESEL (DENTRO)', ini: '', cie: '' },
     13: { nombre: 'GLP', ini: '', cie: '' }
@@ -196,17 +196,30 @@ function exportarPDF() {
     const efectivoEsperado = totalDinero - qr - posterior + inicial;
     const diferencia = efectivoEsperado - contado;
 
-    pdf.text(`Dinero inicial: $${inicial.toLocaleString()}`, 10, y);
+    pdf.text(`CAJA INICIO: $${inicial.toLocaleString()}`, 10, y);
     y += 6;
-    pdf.text(`Ventas QR: $${qr.toLocaleString()}`, 10, y);
+    pdf.text(`VENTA VIRTUAL: $${qr.toLocaleString()}`, 10, y);
     y += 6;
-    pdf.text(`Pagos posteriores: $${posterior.toLocaleString()}`, 10, y);
+    pdf.text(`COBRANZAS: $${posterior.toLocaleString()}`, 10, y);
     y += 6;
-    pdf.text(`Dinero contado: $${contado.toLocaleString()}`, 10, y);
+    pdf.text(`CAJA CIERRE: $${contado.toLocaleString()}`, 10, y);
     y += 6;
-    pdf.text(`Efectivo esperado: $${efectivoEsperado.toLocaleString()}`, 10, y);
+    pdf.text(`EFECTIVO ESPERADO: $${efectivoEsperado.toLocaleString()}`, 10, y);
     y += 6;
-    pdf.text(`Diferencia: $${diferencia.toLocaleString()}`, 10, y);
+
+if(diferencia>0){
+    pdf.text(`Falta: $${diferencia.toLocaleString()}`, 10, y);
+}
+
+if(diferencia<0){
+    pdf.text(`Sobra: $${diferencia.toLocaleString()}`, 10, y);
+
+}
+
+if(diferencia==0){
+    pdf.text(`CAJA EXACTA`, 10, y);
+
+}
 
     pdf.save('planilla_combustible.pdf');
 }
@@ -294,6 +307,14 @@ document.getElementById('btn-exp1').onclick = () => cambiarExp(1);
 document.getElementById('btn-exp2').onclick = () => cambiarExp(2);
 document.getElementById('btn-exp3').onclick = () => cambiarExp(3);
 
+function confirmarcambioturno(){
+const seguro = confirm("Estas seguro que deseas continuar?");
+
+if(seguro){
+prepararNuevoTurno();
+}
+
+}
 
 
 function prepararNuevoTurno() {

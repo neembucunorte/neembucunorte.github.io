@@ -1,4 +1,6 @@
 const STORAGE_KEY = 'planilla-combustible-v1';
+const STORAGE_KEY2 = 'horaentrada';
+
 let modo = 'inicio'; // o 'cierre'
 const contenedor = document.getElementById('contenedor');
 let expActual = 1;
@@ -26,6 +28,21 @@ const datos = {
 
 
 };
+
+function guardarhoraentrada(){
+const fechahoraS = localStorage.getItem(STORAGE_KEY2);
+const fechahoraL = Date();
+if (!fechahoraS){
+localStorage.setItem(STORAGE_KEY2, fechahoraL)
+}
+}
+
+function borrarhoraentrada(){
+const fechahoraS = localStorage.getItem(STORAGE_KEY2);
+if (fechahoraS){
+localStorage.removeItem(STORAGE_KEY2)
+}
+}
 
 
 function guardarEstado() {
@@ -96,7 +113,7 @@ function exportarPDF() {
     const nombrePlayero = document.getElementById('nombre-playero').value || '-';
     const fecha = new Date().toLocaleDateString();
     const hora = new Date().toLocaleTimeString();
-
+    const fechahorainicio = localStorage.getItem("horaentrada");
     const estado = JSON.parse(localStorage.getItem('planilla-combustible-v1'));
     if (!estado) {
         alert('No hay datos guardados');
@@ -123,7 +140,12 @@ function exportarPDF() {
     pdf.setFontSize(10);
     pdf.text(`Fecha: ${fecha}`, 10, y);
     y += 6;
-    pdf.text(`Hora: ${hora}`, 10, y);
+
+   
+    pdf.text(`HoraInicio: ${fechahorainicio}`, 10, y);
+    y += 6;
+
+ pdf.text(`HoraFin: ${hora}`, 10, y);
     y += 6;
     pdf.text(`Playero: ${nombrePlayero}`, 10, y);
     y += 10;
@@ -220,7 +242,7 @@ if(diferencia==0){
     pdf.text(`CAJA EXACTA`, 10, y);
 
 }
-
+borrarhoraentrada()
     pdf.save('planilla_combustible.pdf');
 }
 
@@ -372,3 +394,4 @@ function verificarCaja() {
 cargarEstado();
 renderMangueras();
 sumarTodo();
+guardarhoraentrada()

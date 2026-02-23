@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla Combustible con Importe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">PLANILLA DE VENTAS</div>
+
+<div class="playero-row">
+    <label>Playero:</label>
+    <input type="text" id="nombre-playero" placeholder="Ingrese su nombre" 
+          >
+</div>
+
+<div class="mode-selector">
+        <button class="mode-btn active" id="m-ini" onclick="setModo('inicio')">MODO INICIO</button>
+        <button class="mode-btn" id="m-cie" onclick="setModo('cierre')">MODO CIERRE</button>
+    </div>
+
+<div class="tabs">
+    <button class="tab-btn active" id="btn-exp1">MÁQUINA 1</button>
+    <button class="tab-btn" id="btn-exp2">MÁQUINA 2</button>
+    <button class="tab-btn" id="btn-exp3">MÁQUINA 3</button>
+
+</div>
+
+<div id="contenedor" class="contenedor-mangueras"></div>
+
+<div class="card" id="caja-card">
+    <h3>Control de Caja</h3>
+    <div class="input-row">
+        <div>
+            <label>Dinero en Caja</label>
+            <input type="number" id="dinero-inicial" value="0">
+        </div>
+        <div>
+            <label>Ventas QR</label>
+            <input type="number" id="ventas-qr" value="0">
+        </div>
+        <div>
+            <label>Fiado</label>
+            <input type="number" id="pago-posterior" value="0">
+        </div>
+        <div>
+            <label>Dinero contado</label>
+            <input type="number" id="dinero-contado" value="0">
+        </div>
+    </div>
+    <button class="mode-btn active" onclick="verificarCaja()">Verificar Caja</button>
+    <div id="resultado-caja"></div>
+</div>
+<div class="footer-total">
+
+    <div class="total-line">
+        <span>TOTAL IMPORTE:</span>
+        <strong id="gran-total-dinero">$ 0</strong>
+    </div>
+
+    
+</div>
+<button class="mode-btn active"onclick=" exportarPDF()">EXPORTAR PDF</button>
+<button class="mode-btn active" onclick="prepararNuevoTurno()">Nuevo Turno</button>
+<script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>

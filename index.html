@@ -8,13 +8,14 @@
 </head>
 <body>
 
+<div id="turno-header"class="headerturno">
+    <span style="padding-left: 10%;" id="turno-nombre">Operador: -</span>
+    <span style="padding-right: 10%;" id="turno-hora">Hora inicio: -</span>
+</div>
+
 <div class="header">PLANILLA DE VENTAS</div>
 
-<div class="playero-row">
-    <label>Playero:</label>
-    <input type="text" id="nombre-playero" placeholder="Ingrese su nombre" 
-          >
-</div>
+
 
 <div class="mode-selector">
         <button class="mode-btn active" id="m-ini" onclick="setModo('inicio')">MODO INICIO</button>
@@ -22,9 +23,9 @@
     </div>
 
 <div class="tabs">
-    <button class="tab-btn active" id="btn-exp1">MÁQUINA 1</button>
-    <button class="tab-btn" id="btn-exp2">MÁQUINA 2</button>
-    <button class="tab-btn" id="btn-exp3">MÁQUINA 3</button>
+    <button class="tab-btn active" id="btn-exp1">SURTIDOR 1</button>
+    <button class="tab-btn" id="btn-exp2">SURTIDOR 2</button>
+    <button class="tab-btn" id="btn-exp3">SURTIDOR 3</button>
 
 </div>
 
@@ -70,4 +71,13 @@
 <script src="script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
+
+
+<div id="login-dialog" class="dialog">
+  <label>Nombre del operador:</label>
+  <input type="text" id="nombre-operator" placeholder="Ingrese su nombre">
+  <button onclick="iniciarturno()">Iniciar turno</button>
+</div>
+
+
 </html>

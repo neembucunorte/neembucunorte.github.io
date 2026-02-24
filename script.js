@@ -1,5 +1,15 @@
 const STORAGE_KEY = 'planilla-combustible-v1';
 const STORAGE_KEY2 = 'horaentrada';
+const STORAGE_KEY3 = 'playero'
+
+window.onload = function() {
+  // Mostrar modal si no hay hora ni nombre
+  if (!localStorage.getItem(STORAGE_KEY2) || !localStorage.getItem(STORAGE_KEY3)) {
+    document.getElementById('login-dialog').style.display = 'flex';
+  } else {
+    document.getElementById('login-dialog').style.display = 'none';
+  }
+}
 
 let modo = 'inicio'; // o 'cierre'
 const contenedor = document.getElementById('contenedor');
@@ -29,12 +39,59 @@ const datos = {
 
 };
 
-function guardarhoraentrada(){
-const fechahoraS = localStorage.getItem(STORAGE_KEY2);
-const fechahoraL = Date();
-if (!fechahoraS){
-localStorage.setItem(STORAGE_KEY2, fechahoraL)
+function actualizarHeaderTurno() {
+    const nombre = localStorage.getItem(STORAGE_KEY3) || '-';
+    const horaISO = localStorage.getItem(STORAGE_KEY2);
+
+    let hora = '-';
+    if (horaISO) {
+        const d = new Date(horaISO);
+        hora = d.toLocaleTimeString();
+    }
+
+    document.getElementById("turno-nombre").textContent = `Operador: ${nombre}`;
+    document.getElementById("turno-hora").textContent = `Hora inicio: ${hora}`;
 }
+
+function iniciarturno(){
+     const nombre = document.getElementById('nombre-operator').value.trim();
+  if (!nombre) {
+    alert("Ingrese su nombre para iniciar turno");
+    return;
+  }
+
+  // Guardar nombre
+  localStorage.setItem(STORAGE_KEY3, nombre);
+
+
+    guardarhoraentrada()
+
+     document.getElementById('login-dialog').style.display = 'none';
+
+      actualizarHeaderTurno()
+}
+
+function guardarhoraentrada(){
+const guardado = localStorage.getItem(STORAGE_KEY2);
+    const ahora = new Date();
+
+    if (!guardado) {
+        // No existe turno
+        localStorage.setItem(STORAGE_KEY2, ahora.toISOString());
+        return;
+    }
+
+    const fechaGuardada = new Date(guardado);
+
+    const mismoDia =
+        fechaGuardada.getFullYear() === ahora.getFullYear() &&
+        fechaGuardada.getMonth() === ahora.getMonth() &&
+        fechaGuardada.getDate() === ahora.getDate();
+
+    if (!mismoDia) {
+        // Turno viejo → sobrescribir
+        localStorage.setItem(STORAGE_KEY2, ahora.toISOString());
+    }
 }
 
 function borrarhoraentrada(){
@@ -43,6 +100,14 @@ if (fechahoraS){
 localStorage.removeItem(STORAGE_KEY2)
 }
 }
+
+function borrarplayero(){
+const playero = localStorage.getItem(STORAGE_KEY3);
+if (playero){
+localStorage.removeItem(STORAGE_KEY3)
+}
+}
+
 
 
 function guardarEstado() {
@@ -109,12 +174,22 @@ function renderMangueras() {
         `;
     }
 }
+
 function exportarPDF() {
-    const nombrePlayero = document.getElementById('nombre-playero').value || '-';
+    const nombrePlayero =  localStorage.getItem(STORAGE_KEY3) || '-';
     const fecha = new Date().toLocaleDateString();
     const hora = new Date().toLocaleTimeString();
-    const fechahorainicio = localStorage.getItem("horaentrada");
-    const estado = JSON.parse(localStorage.getItem('planilla-combustible-v1'));
+
+
+    const horaInicioISO  = localStorage.getItem(STORAGE_KEY2);
+let horaInicioFormateada = '-';
+  const d = new Date(horaInicioISO);
+    horaInicioFormateada = d.toLocaleTimeString();
+
+
+
+
+    const estado = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!estado) {
         alert('No hay datos guardados');
         return;
@@ -142,7 +217,7 @@ function exportarPDF() {
     y += 6;
 
    
-    pdf.text(`HoraInicio: ${fechahorainicio}`, 10, y);
+    pdf.text(`HoraInicio: ${horaInicioFormateada}`, 10, y);
     y += 6;
 
  pdf.text(`HoraFin: ${hora}`, 10, y);
@@ -164,7 +239,7 @@ function exportarPDF() {
 
         // 📊 ENCABEZADO TABLA
         pdf.setFontSize(10);
-        pdf.text(`MÁQUINA ${m}`, 10, y);
+        pdf.text(`SURTIDOR ${m}`, 10, y);
         y += 6;
         pdf.text('NOMBRE', 10, y);
         pdf.text('INICIO', 70, y);
@@ -243,6 +318,7 @@ if(diferencia==0){
 
 }
 borrarhoraentrada()
+borrarplayero()
     pdf.save('planilla_combustible.pdf');
 }
 
@@ -394,4 +470,4 @@ function verificarCaja() {
 cargarEstado();
 renderMangueras();
 sumarTodo();
-guardarhoraentrada()
+ actualizarHeaderTurno()

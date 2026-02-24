@@ -14,6 +14,7 @@ body {
 }
 
 .header {
+    
     background: var(--dark);
     color: white;
     padding: 15px;
@@ -228,4 +229,36 @@ input {
     border-radius: 4px;
     border: 1px solid #cbd5e1;
     flex: 1;
+}
+
+.dialog {
+  position: fixed;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.dialog input, .dialog button {
+  margin: 5px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.headerturno{
+  position: sticky;       /* hace que el header siga visible al hacer scroll */
+    top: 0;                 /* se queda pegado a la parte superior */
+    z-index: 500;           /* siempre encima de otros elementos */
+    width: 100%;
+    background: #222;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }

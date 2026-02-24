@@ -467,8 +467,18 @@ function verificarCaja() {
     }
 }
 
+function limpiar() {
+localStorage.removeItem(STORAGE_KEY);
+localStorage.removeItem(STORAGE_KEY2);
+localStorage.removeItem(STORAGE_KEY3);
+    window.location.reload()
+
+}
+
+
 cargarEstado();
 renderMangueras();
 sumarTodo();
  actualizarHeaderTurno()
+
 
